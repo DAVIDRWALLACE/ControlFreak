@@ -1,24 +1,32 @@
-
+// control freak 1.0
+// author David R Wallace
+// requires libraries: jquery, conrolFreaksLibrary.js,customFreaksLibrary.js
 
 var ControlFreak;
 
 (function () {
 
-  
-
-
-
-
-
-
-
-
-
-  
+// main render function
+// if single element is passed, object is defined, merged into type html template, and returned as html for rendering
+// if array of control elements are passed, each control is rendered into html and html for group of controls is returned
+// this allows for grouping and hierarchical sections
+function drawControl(c,pControlAray) {
+  if ($.isArray(pControlArray)) {
+    var subRender="";
+    $.each( pControlArray, function( i, val ) {
+      subRender+=drawControlNoWrap(c,val);
+      }
+      return subrender
+  }else{
+	  $.extend(c,ct(c,"cReset"))
+	  $.extend(c,ct(c,pControlAray))
+    c.id = c.name + c.cleanId;
+    return draw(c);
+}
+}
 
 
 ControlFreak ={
-render:drawControl,
-refresh:drawControlNoWrap
+render:drawControl
 };
 }());
