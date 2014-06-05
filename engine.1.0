@@ -6,27 +6,95 @@ var ControlFreak;
 
 (function () {
 
-// main render function
-// if single element is passed, object is defined, merged into type html template, and returned as html for rendering
-// if array of control elements are passed, each control is rendered into html and html for group of controls is returned
-// this allows for grouping and hierarchical sections
-function drawControl(c,pControlAray) {
-  if ($.isArray(pControlArray)) {
-    var subRender="";
-    $.each( pControlArray, function( i, val ) {
-      subRender+=drawControlNoWrap(c,val);
-      }
-      return subrender
-  }else{
-	  $.extend(c,ct(c,"cReset"))
-	  $.extend(c,ct(c,pControlAray))
-    c.id = c.name + c.cleanId;
-    return draw(c);
-}
-}
+	var customElements = ""
+		var customControls = ""
+
+	function init() {
+		$.getScript("cfCustomControls.js", function () {
+			customControls = cfCustomControls
+		});
+		$.getScript("cfCustomElements.js", function () {
+			customControls = cfCustomElements
+		});
+	}
+	// main render function
+	// if single element is passed, object is defined, merged into type html template, and returned as html for rendering
+	// if array of control elements are passed, each control is rendered into html and html for group of controls is returned
+	// this allows for grouping and hierarchical sections
+	function drawControl(c, pControlAray) {
+		if ($.isArray(pControlArray)) {
+			var subRender = "";
+			$.each(pControlArray, function (i, val) {
+				subRender += drawControlNoWrap(c, val);
+			})
+			return subrender
+		} else {
+			$.extend(c, ct(c, "cReset"))
+			$.extend(c, ct(c, pControlAray))
+			c.id = c.name + c.cleanId;
+			return draw(c);
+		}
+	}
+
+	// ******************* Control Definitions **************************
 
 
-ControlFreak ={
-render:drawControl
-};
-}());
+	function ct(cd, pType) {
+		var pthis = pType
+			var tSize = 5
+			var tShow = "h"
+
+			if (pType.indexOf("-") >= 0) {
+				tSize = pType.split("-")[1]
+					if ((parseInt(pType.split("-").length) > 2) || (parseInt(pType.split("-s").length) > 1)) {
+						tShow = "s"
+					}
+			}
+
+			var tType = pType.split("-")[0]
+
+			var controls = {
+			$.extend(function () {
+				// clear all control values so we can leave null properties out of control definitions
+				"prime" : {},
+
+				// built in controls
+				"sp" : {
+					"field" : "spacer",
+					"type" : "spacer",
+					"width" : function () {
+						return tSize
+					}
+				}
+			}, cfCustomControls)
+		}
+		var tControl = controls[tType]
+			for (var index in tControl) {
+				if ($.isFunction(tControl[index])) {
+					tControl[index] = tControl[index]()
+				}
+			};
+		return tControl
+	}
+
+	// **************** html control templates *************
+
+	function draw(c) { // templates
+		var controls = {
+			$.extend(function () {
+				"textbox" : "<label for='" + c.id + "' class='" + c.labelClass + "'>" + c.label + "</label><br /><input type='text'   data-scope='" + c.SourceID + "' data-id='" + c.cleanId + "'  value='" + c.value + "' data-attribute='" + c.attribute + "' name='" + c.id + "' class='" + c.class + "' id='" + c.id + "' />",
+				"imagebutton" : "<a  title='" + c.label + "' data-attribute='" + c.attribute + "' data-entity='" + c.Entity + "'  data-level='" + c.level + "' data-scope='" + c.SourceID + "' data-employeeIndex='" + c.employeeIndex + "' data-id='" + c.cleanId + "' onClick=\"stopProp(event);" + c.action + "\" class='" + c.class + "' id='" + c.id + "' >" + c.value + "</a>",
+				"link" : "<a class='" + c.class + "' href='" + c.value + "' id='" + c.id + "'>" + c.label + "</a></div>",
+				"label" : "<label   class='" + c.labelClass + "'>" + c.label + "</label><br clear='all' /><label id='" + c.id + "' class='" + c.class + "'>" + c.value + "</label>",
+				"label2" : "<a id='" + c.id + "' title='" + c.label + "' onClick=\"stopProp(event);" + c.action + "\" class='" + c.class + "'>" + c.value + "</a>",
+				"button" : "<input type='button' value='" + c.value + "' onClick=\stopProp(event);" + c.action + "\" class='" + c.class + "'   data-scope='" + c.SourceID + "' data-id='" + c.cleanId + "' name='" + c.id + "' id='" + c.id + "' />"
+			}, customElements)
+		}
+		return controls[c.type]
+	}
+
+	ControlFreak = {
+		render : drawControl
+	};
+}
+	());
