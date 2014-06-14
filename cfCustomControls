@@ -1,0 +1,212 @@
+function decorate(cd, pType, altType) {
+var tType = pType
+var controls={
+				"reset" : {
+					"field":altType,
+					"name" :altType,
+					"index":1,
+					"size":2,
+					"class":"",
+					"dataType":"string",
+					"labelclass":"textLabel",
+					"value":function() { return eval("cd." + altType) },
+					"label":altType,
+					"type":"textbox",
+					"editable":"true",
+					"table":"tblQuickInfo",
+					"db":"bdbpforum",
+					"wrap":function() { 
+								if (cd.wrap!="nowrap") {
+									return "true"
+								} else {
+									return "false"
+								}
+								
+							},
+					"open":"controlopen",
+					"close":"controlclose"
+				},
+				"sp" : {
+					"field" : "spacer",
+					"type" : "spacer"
+					},
+	"maininfo": {
+			"name":"maininfo",
+			"field":"",
+			"value":function() { return controlFreak.render(cd,"gender,job,email,age,maritalstatus,region,country,interests") },
+			"type":"group",
+			"class":"wrapper",
+			"label":"",
+			"size":12,
+			"wrap":"false",
+			"labelclass":""
+		},
+			"moreinfo": {
+			"name":"moreinfo",
+			"field":"",
+			"value":function() { return controlFreak.render(cd,"interests,selfdescription") },
+			"type":"group",
+			"class":"wrapper",
+			"label":"",
+			"size":12,
+			"wrap":"false",
+			"labelclass":""
+		},
+			"linksinfo": {
+			"name":"linksinfo",
+			"field":"",
+			"value":function() { return controlFreak.render(cd,"diigo,twitter,bebo,link1name,stumble") },
+			"type":"group",
+			"class":"wrapper",
+			"label":"",
+			"size":12,
+			"wrap":"false",
+			"labelclass":""
+		},
+					"sidelinks": {
+			"name":"sidelinks",
+			"field":"",
+			"value":function() { return controlFreak.render(cd,"quickstats,usericon,password,preferences,help") },
+			"type":"groupnowrap",
+			"class":"nowrapper",
+			"label":"",
+			"size":4,
+			"wrap":"false",
+			"labelclass":""
+		},
+"quickstats": {
+			"name":"quickstats",
+			"value":"Quick Info Manager",
+			"type":"navlink",
+			"wrap":"false",
+			"class":"active"
+			},
+			"usericon": {
+			"name":"usericon",
+			"value":"usericon",
+			"wrap":"false",
+			"type":"navlink",
+			},
+			"password": {
+			"name":"password",
+			"wrap":"false",
+			"value":"password",
+			"type":"navlink",
+			},
+			"preferences": {
+			"name":"preferences",
+			"wrap":"false",
+			"value":"preferences",
+			"type":"navlink",
+			},
+			"help": {
+			"name":"help",
+			"value":"help",
+			"wrap":"false",
+			"type":"navlink",
+			},
+"maritalstatus": {
+			"name":"maritalstatus",
+			"field":"maritalstatus",
+			"value":function() { return cd.maritalstatus },
+			"type":"textbox",
+			"wrap":"true",
+			"class":"mediumText editable",
+			"label":"Porn Name",
+			"size":2,
+			"labelclass":"textLabel"
+			},
+"age": {
+			"name":"age",
+			"field":"age",
+			"value":function() { return cd.age },
+			"type":"textbox",
+			"size":"2",
+			"class":"textField editable",
+			"label":"Age",
+			"labelclass":"textLabel"
+			},
+			"gender": {
+			"name":"gender",
+			"field":"gender",
+			"value":function() { return cd.gender },
+			"type":"textbox",
+			"size":"2",
+			"class":"textField editable",
+			"label":"gender",
+			"labelclass":"textLabel"
+			},
+			"job": {
+			"name":"Job",
+			"field":"Job",
+			"value":function() { return cd.job },
+			"type":"textbox",
+			"size":"2",
+			"class":"textField editable",
+			"label":"Job",
+			"labelclass":"textLabel"
+			},
+			"email": {
+			"name":"email",
+			"field":"email",
+			"value":function() { return cd.email },
+			"type":"textbox",
+			"size":"2",
+			"class":"textField editable",
+			"label":"Email",
+			"labelclass":"textLabel"
+			},
+"region": {
+			"name":"region",
+			"field":"region",
+			"value":function() { return cd.region },
+			"type":"textbox",
+			"size":"2",
+			"class":"textField editable",
+			"label":"region",
+			"labelclass":"textLabel"
+			},
+"country": {
+			"name":"country",
+			"field":"country",
+			"value":function() { return cd.country },
+			"type":"textbpx",
+			"size":"2",
+			"class":"textareaMedium editable",
+			"label":"country",
+			"labelclass":"textAreaLabel"
+			},
+"interests": {
+			"name":"hobbies",
+			"field":"hobbies",
+			"value":function() { return cd.hobbies },
+			"type":"textarea",
+			"size":"6",
+			"wrap":"true",
+			"class":"textarea",
+			"label":"My hobbies",
+			"labelclass":"textAreaLabel"
+			},
+"selfdescription": {
+			"name":"selfdescription",
+			"field":"selfdescription",
+			"value":function() { return cd.selfdescription },
+			"type":"textarea",
+			"size":"6",
+			"class":"textarea",
+			"label":"Self Description",
+			"wrap":"true",
+			"labelclass":"textAreaLabel"
+			}
+			}
+			
+		var tControl = controls[pType.toLowerCase()]
+			for (var index in tControl) {
+		// 	alert(index)
+				if ($.isFunction(tControl[index])) {
+					tControl[index] = tControl[index]()
+				}
+			};
+			
+		return tControl
+	}
